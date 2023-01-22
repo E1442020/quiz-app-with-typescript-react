@@ -10,6 +10,7 @@ type props={
     userAnswer: AnswerObject | undefined;
     questionNr: number;
     totalQuestions: number;
+    
 
 
 }
@@ -21,6 +22,7 @@ type props={
         userAnswer,
         questionNr,
         totalQuestions,
+        
 })=> {
   return (
     <>
@@ -31,9 +33,11 @@ type props={
     <p className='question'>{question}</p>
     <div className='answer'>
     {answers.map((answer) => (
-        <button key={answer} disabled={userAnswer ? true : false} value={answer} onClick={callback}>
+       
+        <button  key ={answer} disabled={userAnswer ? true : false} value={answer} onClick={callback}>
             <span >{answer}</span> 
           </button>
+         
       ))}
     </div>
     </div>

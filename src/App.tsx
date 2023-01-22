@@ -1,7 +1,6 @@
-
-import { useState } from 'react';
-import { Difficulty, fetchQuizQuestions, QuestionsState } from './API';
-import QuizCard from './component/QuizCard/QuizCard';
+import { useState } from "react";
+import { Difficulty, fetchQuizQuestions, QuestionsState } from "./API";
+import QuizCard from "./component/QuizCard/QuizCard";
 
 export type AnswerObject = {
   question: string;
@@ -12,14 +11,14 @@ export type AnswerObject = {
 
 const TOTAL_QUESTIONS = 10;
 
-const App:React.FC=()=> {
+const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [questions, setQuestions] = useState<QuestionsState[]>([]);
   const [number, setNumber] = useState(0);
   const [userAnswers, setUserAnswers] = useState<AnswerObject[]>([]);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(true);
-
+  const [green,setGreen] = useState(false);
 
   const startQuiz = async () => {
     setLoading(true);
@@ -35,15 +34,13 @@ const App:React.FC=()=> {
     setLoading(false);
   };
 
-
   const checkAnswer = (e: any) => {
     if (!gameOver) {
-      // User's answer
       const answer = e.currentTarget.value;
       // Check answer against correct answer
       const correct = questions[number].correct_answer === answer;
       // Add score if answer is correct
-      if (correct) setScore((prev) => prev + 1);
+      if (correct) {setScore((prev) => prev + 1); setGreen(true)}
       // Save the answer in the array for user answers
       const answerObject = {
         question: questions[number].question,
@@ -54,7 +51,6 @@ const App:React.FC=()=> {
       setUserAnswers((prev) => [...prev, answerObject]);
     }
   };
-
 
   const nextQuestion = () => {
     // Move on to the next question if not the last question
@@ -67,18 +63,17 @@ const App:React.FC=()=> {
     }
   };
 
-
   return (
-   <>
-   <div className="page-container">
-   <h1>REACT QUIZ</h1>
+    <>
+      <div className="page-container">
+        <h1>REACT QUIZ</h1>
         {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
-          <button className='start' onClick={startQuiz}>
+          <button className="start" onClick={startQuiz}>
             Start
           </button>
         ) : null}
 
-{!gameOver ? <p className='score'>Score: {score}</p> : null}
+        {!gameOver ? <p className="score">Score: {score}</p> : null}
         {loading ? <p>Loading Questions...</p> : null}
         {!loading && !gameOver && (
           <QuizCard
@@ -88,21 +83,21 @@ const App:React.FC=()=> {
             answers={questions[number].answers}
             userAnswer={userAnswers ? userAnswers[number] : undefined}
             callback={checkAnswer}
-            key={number+1}
+            key={number + 1}
           />
         )}
 
-{!gameOver && !loading && userAnswers.length === number + 1 && number !== TOTAL_QUESTIONS - 1 ? (
-          <button className='next' onClick={nextQuestion}>
+        {!gameOver &&
+        !loading &&
+        userAnswers.length === number + 1 &&
+        number !== TOTAL_QUESTIONS - 1 ? (
+          <button className="next" onClick={nextQuestion}>
             Next Question
           </button>
         ) : null}
-
-   </div>
-   
-   
-   </>
+      </div>
+    </>
   );
-}
+};
 
 export default App;

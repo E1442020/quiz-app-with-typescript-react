@@ -15,4 +15,10 @@
 .card-container .answer button {
   padding: 10px;
   cursor: pointer;
+}
+.card-container .answer .green {
+  background-color: green;
+}
+.card-container .answer .red {
+  background-color: red;
 }/*# sourceMappingURL=QuizCard.css.map */
