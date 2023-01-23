@@ -3,9 +3,7 @@ import { Difficulty, fetchQuizQuestions, QuestionsState } from "./API";
 import QuizCard from "./component/QuizCard/QuizCard";
 
 export type AnswerObject = {
-  question: string;
   answer: string;
-  correct: boolean;
   correctAnswer: string;
 };
 
@@ -18,7 +16,6 @@ const App: React.FC = () => {
   const [userAnswers, setUserAnswers] = useState<AnswerObject[]>([]);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(true);
-  const [green,setGreen] = useState(false);
 
   const startQuiz = async () => {
     setLoading(true);
@@ -37,15 +34,12 @@ const App: React.FC = () => {
   const checkAnswer = (e: any) => {
     if (!gameOver) {
       const answer = e.currentTarget.value;
-      // Check answer against correct answer
       const correct = questions[number].correct_answer === answer;
-      // Add score if answer is correct
-      if (correct) {setScore((prev) => prev + 1); setGreen(true)}
-      // Save the answer in the array for user answers
+      if (correct) {
+        setScore((prev) => prev + 1);
+      }
       const answerObject = {
-        question: questions[number].question,
         answer,
-        correct,
         correctAnswer: questions[number].correct_answer,
       };
       setUserAnswers((prev) => [...prev, answerObject]);
@@ -53,9 +47,7 @@ const App: React.FC = () => {
   };
 
   const nextQuestion = () => {
-    // Move on to the next question if not the last question
     const nextQ = number + 1;
-
     if (nextQ === TOTAL_QUESTIONS) {
       setGameOver(true);
     } else {
@@ -83,7 +75,7 @@ const App: React.FC = () => {
             answers={questions[number].answers}
             userAnswer={userAnswers ? userAnswers[number] : undefined}
             callback={checkAnswer}
-            key={number + 1}
+            key={number}
           />
         )}
 
